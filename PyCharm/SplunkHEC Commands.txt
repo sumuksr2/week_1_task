@@ -1,0 +1,52 @@
+This file shows the list of commands I ran along with what I learned in terms of Splunk HEC Handler.
+Please note, I used a tutorial for this information so it is not owned nor originally created by me.
+
+The tutorial can be found on this link:
+https://www.youtube.com/watch?v=qROXrFGqWAU
+
+Below are the list of commands I used throughout the tutorial:
+
+# This is my first request which was a general request to store an event called Hello World. I recevied a success message and the event was recorded.
+C:\Users\sumuk\Documents\AbbVie\week_1_task\PyCharm>curl -k http://localhost:8088/services/collector -H "Authorization:Splunk 697c573a-9371-4c71-a036-cb9998803a66" -d "{\"so
+urcetype\": \"trial\",\"event\":\"hello world!\"}"
+{"text":"Success","code":0}
+
+# This is my second request which was a general request to store two events at the same time. I also received a success.
+C:\Users\sumuk\Documents\AbbVie\week_1_task\PyCharm>curl -k http://localhost:8088/services/collector -H "Authorization:Splunk 697c573a-9371-4c71-a036-cb9998803a66" -d "{\"so
+urcetype\": \"trial\",\"event\":\"hello world!\"}{\"sourcetype\": \"trial\",\"event\":\"hello sid\"}"
+{"text":"Success","code":0}
+
+# In this request I am trying to send raw text to be recorded in Splunk. This also resulted in a success.
+C:\Users\sumuk\Documents\AbbVie\week_1_task\PyCharm>curl -k http://localhost:8088/services/collector/raw?sourcetype=trial -H "Authorization:Splunk 697c573a-9371-4c71-a036-cb
+9998803a66" -d "1, 2, 3... Hello World!"
+{"text":"Success","code":0}
+
+# In this request I used a separate channel to send my event. A channel is used when there are multiple sources trying to record data to Splunk. By using channel, the sources would not override each other in terms of prominence.
+C:\Users\sumuk\Documents\AbbVie\week_1_task\PyCharm>curl -k http://localhost:8088/services/collector?channel=546190ea-1a07-4083-b17e-b24a1e779584 -H "Authorization:Splunk 69
+7c573a-9371-4c71-a036-cb9998803a66" -d "{\"sourcetype\":\"trial\", \"event\":\"hello world!\"}"
+{"text":"Success","code":0}
+
+# In this request I asked for an acknoledgment ID. This ID can be used to check whether the data was indexed in Splunk.
+C:\Users\sumuk\Documents\AbbVie\week_1_task\PyCharm>curl -k http://localhost:8088/services/collector?channel=546190ea-1a07-4083-b17e-b24a1e779584 -H "Authorization:Splunk 69
+7c573a-9371-4c71-a036-cb9998803a66" -d "{\"sourcetype\":\"trial\", \"event\":\"hello world!\"}"
+{"text":"Success","code":0,"ackId":0}
+
+# In this request, I used the previous acknowledgment ID to check whether the previous event was saved in Splunk.
+C:\Users\sumuk\Documents\AbbVie\week_1_task\PyCharm>curl -k http://localhost:8088/services/collector/ack?channel=546190ea-1a07-4083-b17e-b24a1e779584 -H "Authorization:Splun
+k 697c573a-9371-4c71-a036-cb9998803a66" -d "{\"acks\": [0]}"
+{"acks":{"0":true}}
+
+# This request gave an error, because a channel ID is required when the acknowledge ID is enabled. So I had to disable this in the settings.
+C:\Users\sumuk\Documents\AbbVie\week_1_task\PyCharm>curl -k  http://localhost:8088/services/collector -H "Authorization:Splunk 697c573a-9371-4c71-a036-cb9998803a66" -d "{\"s
+ourcetype\":  \"_json\",\"event\": {\"a\": \"value1\", \"b\": [\"value1_1\", \"value1_2\"]}}"
+{"text":"Data channel is missing","code":10}
+
+# Through this request, I was saving a JSON formatted event into splunk.
+C:\Users\sumuk\Documents\AbbVie\week_1_task\PyCharm>curl -k  http://localhost:8088/services/collector -H "Authorization:Splunk 697c573a-9371-4c71-a036-cb9998803a66" -d "{\"s
+ourcetype\":  \"_json\",\"event\": {\"a\": \"value1\", \"b\": [\"value1_1\", \"value1_2\"]}}"
+{"text":"Success","code":0}
+
+# In this request, I created new fields while saving a new event into Splunk
+C:\Users\sumuk\Documents\AbbVie\week_1_task\PyCharm>curl -k  http://localhost:8088/services/collector -H "Authorization:Splunk 697c573a-9371-4c71-a036-cb9998803a66" -d "{\"s
+ourcetype\":  \"trial\",\"event\":\"hello world!\",\"fields\": {\"device\": \"macbook\", \"users\": [\"joe\", \"bob\"]}}"
+{"text":"Success","code":0}

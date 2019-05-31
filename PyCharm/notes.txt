@@ -1,0 +1,18 @@
+Logging Notes:
+
+5 Standard Logging Levels:
+ - Debug: Detailed information, typically of interest only when diagnosing problems
+ - Info: Conformation that things are working as expected
+ - Warning: An indication that something unexpected happened, or indicative of some problem in the near future
+ - Error: Due to a more serious problem, the software has not been able to perform some function
+ - Critical: A serious error, indicating that the program itself may be unable to continue running
+
+- Default level of logging is set as Warning and above
+
+The following links were used to generate these notes:
+ - https://www.youtube.com/watch?v=-ARI4Cz-awo
+ - https://www.youtube.com/watch?v=jxmzY9soFXg
+ - https://docs.python.org/3.6/howto/logging.html
+
+**PLEASE NOTE: The python and log files listed in this directory are not owned by me nor were they originally and solely created by me. 
+               These files only reflect my work as I followed the youtube tutorials which are listed above. 
